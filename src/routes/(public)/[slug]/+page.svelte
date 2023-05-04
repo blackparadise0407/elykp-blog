@@ -64,8 +64,8 @@
 
 <article class="container py-5">
   <div class="prose max-w-none lg:prose-lg">
-    <h1 class="text-4xl mb-0">{post.title}</h1>
-    <p class="opacity-80">
+    <h1 class="text-4xl mb-0 text-center">{post.title}</h1>
+    <p class="text-center">
       Published on
       {dayjs(post.created).format('MMM DD, YYYY')}
     </p>
