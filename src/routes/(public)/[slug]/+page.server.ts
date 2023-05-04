@@ -1,7 +1,7 @@
 import { error, type ServerLoad } from '@sveltejs/kit';
 import sanitize from 'sanitize-html';
 
-import { BAD_REQUEST, NOT_FOUND } from '@/constants/messages';
+import { BAD_REQUEST } from '@/constants/messages';
 import { serializeNonPOJOs } from '@/lib/helpers/serialize';
 
 export const load: ServerLoad = async ({ locals, params: { slug = '' } }) => {
@@ -13,10 +13,6 @@ export const load: ServerLoad = async ({ locals, params: { slug = '' } }) => {
     const post = await locals.pb.collection('posts').getOne<Post>(id, {
       expand: 'author,tags'
     });
-
-    if (!post) {
-      throw error(404, { message: NOT_FOUND, code: 404 });
-    }
 
     post.content = sanitize(post.content);
 

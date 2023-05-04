@@ -4,6 +4,7 @@
   import { page } from '$app/stores';
 
   import { getPbFileUrl, pb } from '@/lib/pb';
+  import { globalStore } from '@/lib/data-access/global';
 
   import type { PageData } from './$types';
   import CommentInput from './comment-input.svelte';
@@ -68,7 +69,11 @@
       Published on
       {dayjs(post.created).format('MMM DD, YYYY')}
     </p>
-    <div contenteditable="false">
+    <div
+      id="content"
+      contenteditable="false"
+      style={`--font-size: ${$globalStore.fontSize}px; --line-height: ${$globalStore.lineHeight}px`}
+    >
       {@html post.content}
     </div>
     <div class="flex flex-wrap gap-3">
@@ -96,3 +101,10 @@
     {/if}
   </div>
 </article>
+
+<style>
+  :global(#content p) {
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+  }
+</style>
