@@ -15,6 +15,9 @@
   }>();
 
   function handleSubmit() {
+    if (!content) {
+      return;
+    }
     dispatch('submit', {
       commenter: name,
       content
@@ -44,6 +47,8 @@
   onDestroy(() => {
     clearInterval(interval);
   });
+
+  $: disabled = !!interval || !content;
 </script>
 
 <form class="mt-5 space-y-3" on:submit|preventDefault={() => handleSubmit()}>
@@ -55,12 +60,7 @@
     bind:value={name}
   />
   <textarea class="textarea w-full mt-5 text-base" placeholder="Aa..." bind:value={content} />
-  <button
-    class="btn btn-primary"
-    class:btn-disabled={!!interval}
-    type="submit"
-    disabled={!!interval}
-  >
+  <button class="btn btn-primary" class:btn-disabled={disabled} type="submit" {disabled}>
     Post
     {#if !!interval}
       {' '}

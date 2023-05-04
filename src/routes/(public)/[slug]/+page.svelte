@@ -9,6 +9,7 @@
   import type { PageData } from './$types';
   import CommentInput from './comment-input.svelte';
   import CommentCard from './comment-card.svelte';
+  import { processHtml } from './html-processor';
 
   export let data: PageData;
 
@@ -44,6 +45,7 @@
 
   onMount(() => {
     loadComments();
+    processHtml();
   });
 </script>
 
@@ -62,7 +64,7 @@
   />
 </svelte:head>
 
-<article class="container py-5">
+<article class="container py-10">
   <div class="prose max-w-none lg:prose-lg">
     <h1 class="text-4xl mb-0 text-center">{post.title}</h1>
     <p class="text-center">
@@ -84,6 +86,9 @@
           </div>
         </a>
       {/each}
+    </div>
+    <div class="mt-5">
+      <a class="link link-primary link-hover mt-5" href="/">← cd ..</a>
     </div>
   </div>
   <div class="divider" />

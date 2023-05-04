@@ -46,6 +46,14 @@ declare global {
     content: string;
     post: string;
   }
+
+  type ToastVariant = 'info' | 'warning' | 'success' | 'error';
+
+  interface Toast {
+    id: string;
+    message: string;
+    variant: ToastVariant;
+  }
 }
 
 export {};
