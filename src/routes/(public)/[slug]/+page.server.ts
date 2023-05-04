@@ -6,7 +6,6 @@ import { serializeNonPOJOs } from '@/lib/helpers/serialize';
 
 export const load: ServerLoad = async ({ locals, params: { slug = '' } }) => {
   const id = slug.substring(slug.lastIndexOf('-') + 1, slug.length);
-  console.log(id);
   if (!id) {
     throw error(400, { message: BAD_REQUEST, code: 400 });
   }
