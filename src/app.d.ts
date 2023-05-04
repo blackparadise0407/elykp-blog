@@ -5,7 +5,10 @@ import PocketBase from 'pocketbase';
 
 declare global {
   namespace App {
-    // interface Error {}
+    interface Error {
+      message?: string;
+      code?: number;
+    }
     interface Locals {
       user?: User;
       pb: PocketBase;

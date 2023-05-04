@@ -6,20 +6,26 @@ import { serializeNonPOJOs } from '@/lib/helpers/serialize';
 
 export const load: ServerLoad = async ({ locals, params: { slug = '' } }) => {
   const id = slug.substring(slug.lastIndexOf('-') + 1, slug.length);
+  console.log(id);
   if (!id) {
-    throw error(400, BAD_REQUEST);
+    throw error(400, { message: BAD_REQUEST, code: 400 });
   }
-  const post = await locals.pb.collection('posts').getOne<Post>(id, {
-    expand: 'author,tags'
-  });
+  try {
+    const post = await locals.pb.collection('posts').getOne<Post>(id, {
+      expand: 'author,tags'
+    });
 
-  if (!post) {
-    throw error(404, NOT_FOUND);
+    if (!post) {
+      throw error(404, { message: NOT_FOUND, code: 404 });
+    }
+
+    post.content = sanitize(post.content);
+
+    return {
+      post: serializeNonPOJOs(post)
+    };
+  } catch (err: any) {
+    const code = err?.status ?? 500;
+    throw error(code, { message: err?.message, code });
   }
-
-  post.content = sanitize(post.content);
-
-  return {
-    post: serializeNonPOJOs(post)
-  };
 };
