@@ -24,10 +24,10 @@
     <div style="display: contents">%sveltekit.body%</div>
   </body>
   <script>
-    let theme = window.localStorage.getItem('theme');
+    let config = window.localStorage.getItem('elykp-config');
     document.addEventListener('DOMContentLoaded', () => {
-      if (theme) {
-        document.body.setAttribute('data-theme', theme);
+      if (config) {
+        document.body.setAttribute('data-theme', JSON.parse(config).theme);
       }
     });
   </script>

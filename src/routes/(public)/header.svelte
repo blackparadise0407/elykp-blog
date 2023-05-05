@@ -1,46 +1,11 @@
 <script lang="ts">
   import { browser } from '$app/environment';
 
-  import { globalStore, resetDefaultSetting } from '@/lib/data-access/global';
-
-  const THEMES = [
-    'light',
-    'dark',
-    'cupcake',
-    'bumblebee',
-    'emerald',
-    'corporate',
-    'synthwave',
-    'retro',
-    'cyberpunk',
-    'valentine',
-    'halloween',
-    'garden',
-    'forest',
-    'aqua',
-    'lofi',
-    'pastel',
-    'fantasy',
-    'wireframe',
-    'black',
-    'luxury',
-    'dracula',
-    'cmyk',
-    'autumn',
-    'business',
-    'acid',
-    'lemonade',
-    'night',
-    'coffee',
-    'winter'
-  ];
-
-  let theme = browser ? window.localStorage.getItem('theme') ?? '' : '';
+  import { THEMES, globalStore, resetDefaultSetting } from '@/lib/data-access/global';
 
   $: {
-    if (browser && theme) {
-      document.body.setAttribute('data-theme', theme);
-      window.localStorage.setItem('theme', theme);
+    if (browser) {
+      document.body.setAttribute('data-theme', $globalStore.theme);
     }
   }
 </script>
@@ -51,7 +16,12 @@
 >
   <div class="container">
     <nav class="navbar flex">
-      <a class="btn btn-ghost normal-case text-xl" href="/">Elykp</a>
+      <a
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-medium normal-case text-xl hover:text-primary-focus transition-colors"
+        href="/"
+      >
+        Elykp
+      </a>
       <div class="flex-grow" />
 
       <div class="dropdown dropdown-end">
@@ -83,7 +53,7 @@
         >
           <div class="p-2 flex justify-between flex-row items-center">
             <span>Theme</span>
-            <select class="select select-primary select-bordered" bind:value={theme}>
+            <select class="select select-primary select-bordered" bind:value={$globalStore.theme}>
               <option disabled selected>Select theme</option>
               {#each THEMES as item}
                 <option>{item}</option>
