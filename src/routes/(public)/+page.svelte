@@ -65,11 +65,11 @@
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-3 gap-5 items-stretch">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch place-items-center">
     {#each posts.items as item (item.id)}
       <a
         href={`/${item.slug}`}
-        class="h-[22rem] card card-compact rounded-box max-w-xs bg-base-300 hover:shadow-lg transition-all"
+        class="w-full h-[22rem] card card-compact rounded-box max-w-xs bg-base-300 hover:shadow-lg transition-all"
       >
         <div class="card-body prose">
           <div class="card-title flex-col items-start">
