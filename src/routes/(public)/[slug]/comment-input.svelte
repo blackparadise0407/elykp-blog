@@ -51,7 +51,7 @@
   $: disabled = !!interval || !content;
 </script>
 
-<form class="mt-5 space-y-3" on:submit|preventDefault={() => handleSubmit()}>
+<form class="mt-5 space-y-3" on:submit|preventDefault={handleSubmit}>
   <p class="font-bold text-lg">Leave a comment</p>
   <input
     type="text"
