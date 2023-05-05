@@ -1,20 +1,36 @@
 <script lang="ts">
   import { browser } from '$app/environment';
+  import { onDestroy, onMount } from 'svelte';
 
   import Dropdown from '@/components/dropdown.svelte';
   import { THEMES, globalStore, resetDefaultSetting } from '@/lib/data-access/global';
+
+  let navbar: HTMLDivElement;
 
   $: {
     if (browser) {
       document.body.setAttribute('data-theme', $globalStore.theme);
     }
   }
+
+  function handleScroll(this: Window) {
+    if (window.scrollY > 64) {
+      navbar.classList.add('bg-base-100', 'shadow-lg');
+    } else {
+      navbar.classList.remove('bg-base-100', 'shadow-lg');
+    }
+  }
+
+  onMount(() => {
+    browser && window.addEventListener('scroll', handleScroll);
+  });
+
+  onDestroy(() => {
+    browser && window.removeEventListener('scroll', handleScroll);
+  });
 </script>
 
-<div
-  class="fixed top-0 left-0 w-screen z-10"
-  style="background-image: linear-gradient(hsl(0 0% 0% / 40%),transparent);"
->
+<div bind:this={navbar} class="fixed top-0 left-0 w-screen z-10 transition-shadow">
   <div class="container">
     <nav class="navbar flex">
       <a
