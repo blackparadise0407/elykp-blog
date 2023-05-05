@@ -92,8 +92,9 @@
             type="range"
             min="16"
             max="24"
-            bind:value={$globalStore.fontSize}
+            step="2"
             class="range range-primary range-xs"
+            bind:value={$globalStore.fontSize}
           />
         </div>
       </div>
@@ -108,6 +109,7 @@
             type="range"
             min="32"
             max="48"
+            step="8"
             bind:value={$globalStore.lineHeight}
             class="range range-primary range-xs"
           />

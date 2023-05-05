@@ -13,8 +13,11 @@ export const load: ServerLoad = async ({ locals, params: { slug = '' } }) => {
     const post = await locals.pb.collection('posts').getOne<Post>(id, {
       expand: 'author,tags'
     });
-
-    post.content = sanitize(post.content);
+    post.content = sanitize(post.content, {
+      allowedClasses: {
+        pre: ['language-*']
+      }
+    });
 
     return {
       post: serializeNonPOJOs(post)

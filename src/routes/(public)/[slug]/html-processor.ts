@@ -2,9 +2,9 @@ export const processHtml = () => {
   const content = document.getElementById('content');
   if (content) {
     const codeBlocks = content.querySelectorAll('pre > code');
-    for (const block of codeBlocks) {
-      block.parentElement?.classList.add('relative');
+    for (const codeBlock of codeBlocks) {
       const button = document.createElement('button');
+      codeBlock.parentElement?.classList.add('relative');
       button.className = 'absolute btn btn-sm btn-square btn-primary top-2 right-2';
       button.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -12,11 +12,12 @@ export const processHtml = () => {
 </svg>
 `;
       button.onclick = () => {
-        if (block.textContent) {
-          navigator.clipboard.writeText(block.textContent);
+        if (codeBlock.textContent) {
+          navigator.clipboard.writeText(codeBlock.textContent);
         }
       };
-      block.parentElement?.appendChild(button);
+      codeBlock.parentElement?.appendChild(button);
     }
   }
+  window.Prism.highlightAllUnder(content);
 };

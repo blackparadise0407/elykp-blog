@@ -54,6 +54,10 @@ declare global {
     message: string;
     variant: ToastVariant;
   }
+
+  interface Window {
+    Prism: any;
+  }
 }
 
 export {};
