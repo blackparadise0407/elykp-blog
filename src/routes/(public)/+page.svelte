@@ -1,6 +1,8 @@
 <script lang="ts">
   import dayjs from 'dayjs';
 
+  import Masonry from '@/components/masonry.svelte';
+
   import type { PageData } from './$types';
 
   export let data: PageData;
@@ -65,22 +67,25 @@
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch place-items-center">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 place-items-center" />
+  <Masonry items={posts.items}>
     {#each posts.items as item (item.id)}
       <a
         href={`/${item.slug}`}
-        class="w-full h-[22rem] card card-compact rounded-box max-w-xs bg-base-300 hover:shadow-lg transition-all"
+        class="w-full card card-compact rounded-box bg-primary hover:shadow-lg transition-all hover:scale-110"
       >
         <div class="card-body prose">
           <div class="card-title flex-col items-start">
-            <div class="text-3xl font-extrabold">{item.title}</div>
-            <span class="text-sm font-normal opacity-80">
+            <div class="text-3xl font-extrabold text-primary-content">
+              {item.title}
+            </div>
+            <span class="text-sm font-normal opacity-80 text-primary-content">
               {dayjs(item.created).format('MMM DD, YYYY')}
             </span>
           </div>
-          <p>{item.description}</p>
+          <p class="text-primary-content">{item.description}</p>
         </div>
       </a>
     {/each}
-  </div>
+  </Masonry>
 </div>

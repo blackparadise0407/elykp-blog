@@ -1,6 +1,7 @@
 <script lang="ts">
   import { browser } from '$app/environment';
 
+  import Dropdown from '@/components/dropdown.svelte';
   import { THEMES, globalStore, resetDefaultSetting } from '@/lib/data-access/global';
 
   $: {
@@ -23,9 +24,8 @@
         Elykp
       </a>
       <div class="flex-grow" />
-
-      <div class="dropdown dropdown-end">
-        <button tabindex="0" class="btn btn-ghost btn-square">
+      <Dropdown class="dropdown-end">
+        <button class="btn btn-ghost btn-square">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -46,61 +46,62 @@
             />
           </svg>
         </button>
-        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-        <ul
-          tabindex="0"
-          class="dropdown-content font-medium menu border-2 border-base-content border-opacity-10 p-3 shadow-lg bg-base-100 rounded-box w-96"
-        >
-          <div class="p-2 flex justify-between flex-row items-center">
-            <span>Theme</span>
-            <select class="select select-primary select-bordered" bind:value={$globalStore.theme}>
-              <option disabled selected>Select theme</option>
-              {#each THEMES as item}
-                <option>{item}</option>
-              {/each}
-            </select>
-          </div>
-          <div class="divider" />
-          <div class="p-2 flex justify-between flex-row items-center">
-            <span style="width: -webkit-fill-available;">Reading size</span>
-            <div class="relative w-full">
-              <div class="absolute left-1/2 -translate-x-1/2 bottom-[100%]">
-                {$globalStore.fontSize} px
-              </div>
-              <input
-                type="range"
-                min="16"
-                max="24"
-                step="2"
-                class="range range-primary range-xs"
-                bind:value={$globalStore.fontSize}
-              />
+
+        <div slot="overlay">
+          <ul
+            class="font-medium menu border-2 border-base-content border-opacity-10 p-3 shadow-lg bg-base-100 rounded-box w-96"
+          >
+            <div class="p-2 flex justify-between flex-row items-center">
+              <span>Theme</span>
+              <select class="select select-primary select-bordered" bind:value={$globalStore.theme}>
+                <option disabled selected>Select theme</option>
+                {#each THEMES as item}
+                  <option>{item}</option>
+                {/each}
+              </select>
             </div>
-          </div>
-          <div class="divider" />
-          <div class="p-2 flex justify-between flex-row items-center">
-            <span style="width: -webkit-fill-available;">Reading line height</span>
-            <div class="relative w-full">
-              <div class="absolute left-1/2 -translate-x-1/2 bottom-[100%]">
-                {$globalStore.lineHeight} px
+            <div class="divider" />
+            <div class="p-2 flex justify-between flex-row items-center">
+              <span style="width: -webkit-fill-available;">Reading size</span>
+              <div class="relative w-full">
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-[100%]">
+                  {$globalStore.fontSize} px
+                </div>
+                <input
+                  type="range"
+                  min="16"
+                  max="24"
+                  step="2"
+                  class="range range-primary range-xs"
+                  bind:value={$globalStore.fontSize}
+                />
               </div>
-              <input
-                type="range"
-                min="32"
-                max="48"
-                step="8"
-                bind:value={$globalStore.lineHeight}
-                class="range range-primary range-xs"
-              />
             </div>
-          </div>
-          <div class="divider" />
-          <div class="p-2 flex justify-between flex-row items-center">
-            <span style="width: -webkit-fill-available;">Use default settings</span>
-            <button class="btn btn-primary" on:click={() => resetDefaultSetting()}>Reset</button>
-          </div>
-        </ul>
-      </div>
+            <div class="divider" />
+            <div class="p-2 flex justify-between flex-row items-center">
+              <span style="width: -webkit-fill-available;">Reading line height</span>
+              <div class="relative w-full">
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-[100%]">
+                  {$globalStore.lineHeight} px
+                </div>
+                <input
+                  type="range"
+                  min="32"
+                  max="48"
+                  step="8"
+                  bind:value={$globalStore.lineHeight}
+                  class="range range-primary range-xs"
+                />
+              </div>
+            </div>
+            <div class="divider" />
+            <div class="p-2 flex justify-between flex-row items-center">
+              <span style="width: -webkit-fill-available;">Use default settings</span>
+              <button class="btn btn-primary" on:click={() => resetDefaultSetting()}>Reset</button>
+            </div>
+          </ul>
+        </div>
+      </Dropdown>
     </nav>
   </div>
 </div>
