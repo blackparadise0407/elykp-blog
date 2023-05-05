@@ -15,11 +15,23 @@ export const load: ServerLoad = async ({ locals, url }) => {
   let filter = '';
   const tags = url.searchParams.get('tags');
   if (tags) {
-    filter += `tags ~ '${tags}'`;
+    filter += `&tags ~ '${tags}'`;
   }
   const data = await locals.pb.collection('posts').getList<Post>(page, PER_PAGE, {
     expand: 'tags',
-    filter
+    filter,
+    sort: '-created'
   });
-  return serializeNonPOJOs(data);
+
+  const latestPost = await locals.pb
+    .collection('posts')
+    .getFirstListItem<Post>('', {
+      sort: '-created'
+    })
+    .catch(() => null);
+
+  return {
+    posts: serializeNonPOJOs(data),
+    latestPost: serializeNonPOJOs(latestPost)
+  };
 };

@@ -47,6 +47,10 @@
     loadComments();
     processHtml();
   });
+
+  const bannerUrl = getPbFileUrl(post, post.banner, {
+    thumb: '640x480'
+  });
 </script>
 
 <svelte:head>
@@ -56,16 +60,14 @@
   <meta property="og:title" content={post.title} />
   <meta property="og:description" content={post.description} />
   <meta property="og:url" content={`${$page.url.origin}/${post.slug}`} />
-  <meta
-    property="og:image"
-    content={getPbFileUrl(post, post.banner, {
-      thumb: '100x100'
-    })}
-  />
+  <meta property="og:image" content={bannerUrl} />
 </svelte:head>
 
 <article class="container py-10">
   <div class="prose max-w-none lg:prose-lg">
+    <figure class="rounded-box overflow-hidden">
+      <img class="object-cover w-full" src={bannerUrl} alt="" />
+    </figure>
     <h1 class="text-4xl mb-0 text-center">{post.title}</h1>
     <p class="text-center">
       Published on
@@ -111,5 +113,9 @@
   :global(#content p) {
     font-size: var(--font-size);
     line-height: var(--line-height);
+  }
+
+  :global(.line-numbers .line-numbers-rows) {
+    border-right: none;
   }
 </style>

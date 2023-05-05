@@ -56,10 +56,14 @@
   <input
     type="text"
     placeholder="Your name (optional)"
-    class="input w-full max-w-xs"
+    class="input input-primary input-bordered w-full max-w-xs"
     bind:value={name}
   />
-  <textarea class="textarea w-full mt-5 text-base" placeholder="Aa..." bind:value={content} />
+  <textarea
+    class="textarea textarea-primary textarea-bordered w-full mt-5 text-base"
+    placeholder="Aa..."
+    bind:value={content}
+  />
   <button class="btn btn-primary" class:btn-disabled={disabled} type="submit" {disabled}>
     Post
     {#if !!interval}

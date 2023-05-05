@@ -13,10 +13,10 @@ export default {
       screens: {
         DEFAULT: '100%',
         sm: '440px',
-        md: '568px',
-        lg: '624px',
-        xl: '820px',
-        '2xl': '936px'
+        md: '668px',
+        lg: '724px',
+        xl: '920px',
+        '2xl': '1036px'
       },
       center: true
     },
