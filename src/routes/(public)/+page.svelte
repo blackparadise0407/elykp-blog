@@ -2,10 +2,35 @@
   import dayjs from 'dayjs';
 
   import Masonry from '@/components/masonry.svelte';
+  import { pb } from '@/lib/pb';
+  import { enqueue } from '@/lib/data-access/toast';
 
   import type { PageData } from './$types';
 
   export let data: PageData;
+
+  let email: string;
+  let loading = false;
+
+  async function handleSubscribe() {
+    if (!email) {
+      return;
+    }
+    loading = true;
+    try {
+      await pb.collection('subscriptions').create({
+        email
+      });
+      enqueue('Thanks for subscribing to our newsletter');
+      email = '';
+    } catch (e: any) {
+      if (e?.response?.data?.email?.code === 'validation_not_unique') {
+        enqueue('You have already subscribed', { variant: 'error' });
+      } else enqueue(e?.message, { variant: 'error' });
+    } finally {
+      loading = false;
+    }
+  }
 
   const posts = data.posts;
   const latestPost = data.latestPost;
@@ -38,14 +63,20 @@
       <div class="divider divider-horizontal" />
       <div class="space-y-3">
         <p class="font-bold text-xl">Subscribe For Updates</p>
-        <div class="form-control">
+        <form class="form-control" on:submit|preventDefault={handleSubscribe}>
           <div class="input-group">
             <input
-              type="text"
+              type="email"
               placeholder="you@email.com"
               class="input input-bordered input-primary w-full"
+              bind:value={email}
             />
-            <button class="btn btn-primary font-medium">
+            <button
+              class="btn btn-primary font-medium loading"
+              class:loading
+              class:btn-disabled={!email}
+              type="submit"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -63,7 +94,7 @@
               Subscribe
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>

@@ -95,18 +95,19 @@
   </div>
   <div class="divider" />
   <CommentInput on:submit={(e) => handleComment(e.detail)} />
-  <div class="mt-5">
-    <p class="font-bold text-lg">Top comments</p>
-    <ul class="mt-5 space-y-8">
-      {#each comments as item (item.id)}
-        <CommentCard data={item} />
-      {/each}
-    </ul>
-    {#if hasMoreComments}
-      <!-- content here -->
-      <button class="btn btn-secondary">Load more</button>
-    {/if}
-  </div>
+  {#if !!comments.length}
+    <div class="mt-5">
+      <p class="font-bold text-lg">Top comments</p>
+      <ul class="mt-5 space-y-8">
+        {#each comments as item (item.id)}
+          <CommentCard data={item} />
+        {/each}
+      </ul>
+      {#if hasMoreComments}
+        <button class="btn btn-secondary">Load more</button>
+      {/if}
+    </div>
+  {/if}
 </article>
 
 <style>

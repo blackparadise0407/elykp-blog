@@ -7,13 +7,11 @@
 
   let navbar: HTMLDivElement;
 
-  $: {
-    if (browser) {
-      document.body.setAttribute('data-theme', $globalStore.theme);
-    }
+  $: if (browser) {
+    document.body.setAttribute('data-theme', $globalStore.theme);
   }
 
-  function handleScroll(this: Window) {
+  function handleScroll() {
     if (window.scrollY > 64) {
       navbar.classList.add('bg-base-100', 'shadow-lg');
     } else {
@@ -22,6 +20,7 @@
   }
 
   onMount(() => {
+    handleScroll();
     browser && window.addEventListener('scroll', handleScroll);
   });
 
