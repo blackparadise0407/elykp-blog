@@ -41,7 +41,7 @@
 </svelte:head>
 
 <div class="container py-5 space-y-10">
-  <div class="hero py-5 px-10 bg-base-300 rounded-box">
+  <div class="hero py-5 px-5 md:px-10 bg-base-300 rounded-box">
     <div
       class="hero-content max-w-none w-full flex-col md:flex-row gap-3 items-start md:items-center"
     >
