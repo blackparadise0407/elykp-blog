@@ -41,18 +41,18 @@
 </svelte:head>
 
 <div class="container py-5 space-y-10">
-  <div class="hero py-5 px-5 md:px-10 bg-base-300 rounded-box">
+  <div class="hero py-5 px-5 md:px-10 rounded-box">
     <div
       class="hero-content max-w-none w-full flex-col md:flex-row gap-3 items-start md:items-center"
     >
       {#if latestPost}
         <div class="flex-grow self-start md:max-w-[40%]">
-          <span class="font-medium">Latest post</span>
+          <span class="font-medium !text-primary">Latest post</span>
           <div class="prose max-w-none w-full">
             <h1>{latestPost.title}</h1>
             <p>{latestPost.description}</p>
             <a
-              class="link link-primary inline-block max-w-[10rem] truncate"
+              class="link !link-primary inline-block max-w-[10rem] truncate"
               href={`/${latestPost.slug}`}
             >
               → cd ./{latestPost.title}
@@ -68,29 +68,14 @@
             <input
               type="email"
               placeholder="you@email.com"
-              class="input input-bordered input-primary w-full"
+              class="input input-bordered w-full"
               bind:value={email}
             />
             <button
-              class="btn btn-primary font-medium loading"
+              class="btn font-medium btn-primary !text-primary-content"
               class:loading
-              class:btn-disabled={!email}
               type="submit"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-6 h-6 mr-2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                />
-              </svg>
               Subscribe
             </button>
           </div>
@@ -120,3 +105,13 @@
     {/each}
   </Masonry>
 </div>
+
+<style>
+  .hero {
+    @apply bg-neutral;
+  }
+
+  .hero * {
+    @apply text-neutral-content;
+  }
+</style>
