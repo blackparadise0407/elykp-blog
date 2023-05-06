@@ -1,7 +1,9 @@
-export const processHtml = () => {
-  const content = document.getElementById('content');
-  if (content) {
-    const codeBlocks = content.querySelectorAll('pre > code');
+export const processHtml = (rawHTML: string) => {
+  const preloadDoc = document.createElement('div');
+  preloadDoc.innerHTML = rawHTML;
+  if (preloadDoc) {
+    // Process code blocks
+    const codeBlocks = preloadDoc.querySelectorAll('pre > code');
     for (const codeBlock of codeBlocks) {
       const button = document.createElement('button');
       button.className = 'absolute btn btn-sm btn-square btn-primary top-2 right-2';
@@ -20,6 +22,19 @@ export const processHtml = () => {
         codeBlock.parentElement.outerHTML = `<div class="relative">${codeBlock.parentElement.outerHTML} ${button.outerHTML}</div>`;
       }
     }
+
+    // Process images
+    const imgBlocks = preloadDoc.getElementsByTagName('img');
+
+    for (const imgBlock of imgBlocks) {
+      imgBlock.setAttribute('loading', 'lazy');
+    }
   }
-  window.Prism.highlightAllUnder(content);
+
+  const content = document.getElementById('content');
+  if (content) {
+    content.innerHTML = preloadDoc.innerHTML;
+    window.Prism.highlightAllUnder(content);
+    preloadDoc.remove();
+  }
 };

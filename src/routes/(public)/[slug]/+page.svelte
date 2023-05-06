@@ -2,6 +2,7 @@
   import dayjs from 'dayjs';
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
+  import { browser } from '$app/environment';
 
   import { getPbFileUrl, pb } from '@/lib/pb';
   import { globalStore } from '@/lib/data-access/global';
@@ -14,7 +15,7 @@
   export let data: PageData;
 
   let comments: Comment[] = [];
-
+  let bannerUrl = '';
   let hasMoreComments = false;
 
   function getBadgeColor(name: string) {
@@ -45,12 +46,22 @@
 
   onMount(() => {
     loadComments();
-    processHtml();
+    processHtml(post.content);
   });
 
-  const bannerUrl = getPbFileUrl(post, post.banner, {
-    thumb: '640x480'
-  });
+  function getThumb(w: number) {
+    if (w < 640) {
+      return '480x360';
+    } else if (w >= 640 && w < 1024) {
+      return '640x480';
+    } else return '768x576';
+  }
+
+  $: if (browser) {
+    bannerUrl = getPbFileUrl(post, post.banner, {
+      thumb: getThumb(window.innerWidth)
+    });
+  }
 </script>
 
 <svelte:head>
@@ -65,9 +76,11 @@
 
 <article class="container py-10">
   <div class="prose max-w-none lg:prose-lg">
-    <figure class="rounded-box overflow-hidden">
-      <img class="object-cover w-full" src={bannerUrl} alt="" />
-    </figure>
+    {#if bannerUrl}
+      <figure class="rounded-box overflow-hidden">
+        <img class="object-cover w-full" src={bannerUrl} alt="" />
+      </figure>
+    {/if}
     <h1 class="text-4xl mb-0 text-center">{post.title}</h1>
     <p class="text-center">
       Published on
@@ -75,11 +88,8 @@
     </p>
     <div
       id="content"
-      contenteditable="false"
       style={`--font-size: ${$globalStore.fontSize}px; --line-height: ${$globalStore.lineHeight}px`}
-    >
-      {@html post.content}
-    </div>
+    />
     <div class="flex flex-wrap gap-3">
       {#each post.expand.tags ?? [] as item (item.id)}
         <a href={`/?tags=${item.id}`}>

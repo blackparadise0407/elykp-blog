@@ -16,7 +16,10 @@ export const load: ServerLoad = async ({ locals, params: { slug = '' } }) => {
     post.content = sanitize(post.content, {
       allowedClasses: {
         pre: ['language-*']
-      }
+      },
+      allowedTags: sanitize.defaults.allowedTags.concat(['img']),
+      allowedAttributes: { img: ['src'] },
+      allowedSchemes: ['data', 'http', 'https']
     });
 
     return {

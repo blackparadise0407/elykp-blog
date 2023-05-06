@@ -40,6 +40,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     'no-empty': ['error', { allowEmptyCatch: true }],
     '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions'] }],
+    'no-console': 'warn',
     'import/order': [
       'error',
       {
