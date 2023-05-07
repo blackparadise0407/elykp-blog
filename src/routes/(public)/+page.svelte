@@ -145,7 +145,7 @@
     {#each posts as item (item.id)}
       <a
         href={`/${item.slug}`}
-        class="w-full card card-compact rounded-box bg-primary hover:shadow-lg transition-all hover:scale-110"
+        class="w-full card card-compact rounded-box bg-primary hover:shadow-lg transition-all md:hover:scale-110"
       >
         <div class="card-body prose">
           <div class="card-title flex-col items-start">
