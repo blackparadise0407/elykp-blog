@@ -1,3 +1,5 @@
+import slugify from 'slugify';
+
 export const processHtml = (rawHTML: string) => {
   const preloadDoc = document.createElement('div');
   preloadDoc.innerHTML = rawHTML;
@@ -29,12 +31,24 @@ export const processHtml = (rawHTML: string) => {
     for (const imgBlock of imgBlocks) {
       imgBlock.setAttribute('loading', 'lazy');
     }
+
+    // Process headings
+    const headingBlocks = preloadDoc.querySelectorAll('h1');
+    for (const headingBlock of headingBlocks) {
+      headingBlock.id = slugify(headingBlock.textContent ?? '', {
+        lower: true,
+        trim: true,
+        strict: true
+      });
+    }
   }
 
   const content = document.getElementById('content');
   if (content) {
     content.innerHTML = preloadDoc.innerHTML;
     window.Prism.highlightAllUnder(content);
-    preloadDoc.remove();
   }
+  preloadDoc.remove();
+
+  return content?.innerHTML;
 };

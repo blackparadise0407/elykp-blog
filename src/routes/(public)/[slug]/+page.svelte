@@ -11,12 +11,14 @@
   import CommentInput from './comment-input.svelte';
   import CommentCard from './comment-card.svelte';
   import { processHtml } from './html-processor';
+  import TableOfContent from './table-of-content.svelte';
 
   export let data: PageData;
 
   let comments: Comment[] = [];
   let bannerUrl = '';
   let hasMoreComments = false;
+  let html: string | undefined;
 
   function getBadgeColor(name: string) {
     const availableColors = ['', 'badge-primary', 'badge-secondary', 'badge-accent', 'badge-ghost'];
@@ -46,7 +48,7 @@
 
   onMount(() => {
     loadComments();
-    processHtml(post.content);
+    html = processHtml(post.content);
   });
 
   function getThumb(w: number) {
@@ -75,32 +77,35 @@
 </svelte:head>
 
 <article class="container py-10">
-  <div class="prose max-w-none lg:prose-lg">
-    {#if bannerUrl}
-      <figure class="rounded-box overflow-hidden">
-        <img class="object-cover w-full" src={bannerUrl} alt="" />
-      </figure>
-    {/if}
-    <h1 class="text-4xl mb-0 text-center">{post.title}</h1>
-    <p class="text-center">
-      Published on
-      {dayjs(post.created).format('MMM DD, YYYY')}
-    </p>
-    <div
-      id="content"
-      style={`--font-size: ${$globalStore.fontSize}px; --line-height: ${$globalStore.lineHeight}px`}
-    />
-    <div class="flex flex-wrap gap-3">
-      {#each post.expand.tags ?? [] as item (item.id)}
-        <a href={`/?tags=${item.id}`}>
-          <div class={`badge md:badge-lg ${getBadgeColor(item.name)}`}>
-            #{item.name}
-          </div>
-        </a>
-      {/each}
-    </div>
-    <div class="mt-5">
-      <a class="link link-primary link-hover mt-5" href="/">← cd ..</a>
+  <div class="relative">
+    <div class="prose max-w-none lg:prose-lg">
+      {#if bannerUrl}
+        <figure class="rounded-box overflow-hidden">
+          <img class="object-cover w-full" src={bannerUrl} alt="" />
+        </figure>
+      {/if}
+      <h1 class="text-4xl mb-0 text-center">{post.title}</h1>
+      <p class="text-center">
+        Published on
+        {dayjs(post.created).format('MMM DD, YYYY')}
+      </p>
+      <TableOfContent {html} />
+      <div
+        id="content"
+        style={`--font-size: ${$globalStore.fontSize}px; --line-height: ${$globalStore.lineHeight}px`}
+      />
+      <div class="flex flex-wrap gap-3">
+        {#each post.expand.tags ?? [] as item (item.id)}
+          <a href={`/?tags=${item.id}`}>
+            <div class={`badge md:badge-lg ${getBadgeColor(item.name)}`}>
+              #{item.name}
+            </div>
+          </a>
+        {/each}
+      </div>
+      <div class="mt-5">
+        <a class="link link-primary link-hover mt-5" href="/">← cd ..</a>
+      </div>
     </div>
   </div>
   <div class="divider" />
