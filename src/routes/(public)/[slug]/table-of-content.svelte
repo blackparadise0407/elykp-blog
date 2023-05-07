@@ -19,7 +19,7 @@
   <ol>
     {#each headings as heading}
       <li>
-        <a class="link link-primary link-hover" href={`#${heading.id}`}>
+        <a class="link link-hover" href={`#${heading.id}`}>
           {heading.textContent}
         </a>
       </li>
