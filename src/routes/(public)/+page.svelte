@@ -1,16 +1,29 @@
 <script lang="ts">
   import dayjs from 'dayjs';
+  import { onDestroy, onMount } from 'svelte';
+  import { browser } from '$app/environment';
 
   import Masonry from '@/components/masonry.svelte';
   import { pb } from '@/lib/pb';
   import { enqueue } from '@/lib/data-access/toast';
+  import { PbFilter } from '@/lib/helpers/common';
+  import Loader from '@/components/loader.svelte';
+  import { BAD_REQUEST } from '@/constants/messages';
 
   import type { PageData } from './$types';
 
   export let data: PageData;
 
+  const PER_PAGE = 9;
+
   let email: string;
   let loading = false;
+  const filters = new PbFilter();
+
+  let posts: Post[] = [],
+    page = 1,
+    postLoading = true,
+    hasMore = false;
 
   async function handleSubscribe() {
     if (!email) {
@@ -32,7 +45,51 @@
     }
   }
 
-  const posts = data.posts;
+  let div: HTMLDivElement;
+
+  function handleScroll(this: Document) {
+    if (this.scrollingElement) {
+      const scrolledToBot =
+        this.scrollingElement.scrollHeight -
+          (this.scrollingElement.scrollTop + this.scrollingElement.clientHeight) <
+        20;
+      if (scrolledToBot && !postLoading && hasMore) {
+        page = page + 1;
+        loadPosts(page);
+      }
+    }
+  }
+
+  onMount(() => {
+    browser && document.addEventListener('scroll', handleScroll);
+    loadPosts(page);
+  });
+
+  onDestroy(() => {
+    browser && document.removeEventListener('scroll', handleScroll);
+  });
+
+  async function loadPosts(page: number) {
+    postLoading = true;
+    const url = new URL(location.href);
+    const tags = url.searchParams.get('tags');
+    if (tags) {
+      filters.add(`tags ~ '${tags}'`);
+    }
+    try {
+      const { items, totalItems } = await pb.collection('posts').getList<Post>(page, PER_PAGE, {
+        sort: '-created',
+        filter: filters.get()
+      });
+      posts = [...posts, ...items];
+      hasMore = posts.length < totalItems;
+    } catch (e) {
+      enqueue(BAD_REQUEST, { variant: 'error' });
+    } finally {
+      postLoading = false;
+    }
+  }
+
   const latestPost = data.latestPost;
 </script>
 
@@ -40,7 +97,7 @@
   <title>Elykp</title>
 </svelte:head>
 
-<div class="container py-5 space-y-10">
+<div bind:this={div} class="container py-5 space-y-10">
   <div class="hero py-5 px-5 md:px-10 rounded-box">
     <div
       class="hero-content max-w-none w-full flex-col md:flex-row gap-3 items-start md:items-center"
@@ -84,8 +141,8 @@
     </div>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-5 place-items-center" />
-  <Masonry items={posts.items}>
-    {#each posts.items as item (item.id)}
+  <Masonry items={posts}>
+    {#each posts as item (item.id)}
       <a
         href={`/${item.slug}`}
         class="w-full card card-compact rounded-box bg-primary hover:shadow-lg transition-all hover:scale-110"
@@ -104,6 +161,9 @@
       </a>
     {/each}
   </Masonry>
+  {#if postLoading}
+    <Loader class="mx-auto" />
+  {/if}
 </div>
 
 <style>
