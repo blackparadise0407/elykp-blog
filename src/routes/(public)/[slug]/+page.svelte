@@ -74,6 +74,7 @@
   <meta property="og:description" content={post.description} />
   <meta property="og:url" content={`${$page.url.origin}/${post.slug}`} />
   <meta property="og:image" content={bannerUrl} />
+  <link rel="canonical" href={`${$page.url.origin}/${post.slug}`} />
 </svelte:head>
 
 <article class="container py-10">
