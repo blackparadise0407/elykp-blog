@@ -1,5 +1,4 @@
 <script lang="ts">
-  import dayjs from 'dayjs';
   import { onDestroy, onMount } from 'svelte';
   import { browser } from '$app/environment';
 
@@ -11,6 +10,7 @@
   import { BAD_REQUEST } from '@/constants/messages';
 
   import type { PageData } from './$types';
+  import PostCard from './post-card.svelte';
 
   export let data: PageData;
 
@@ -143,22 +143,7 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-5 place-items-center" />
   <Masonry items={posts}>
     {#each posts as item (item.id)}
-      <a
-        href={`/${item.slug}`}
-        class="w-full card card-compact rounded-box bg-primary hover:shadow-lg transition-all md:hover:scale-110"
-      >
-        <div class="card-body prose">
-          <div class="card-title flex-col items-start">
-            <div class="text-3xl font-extrabold text-primary-content">
-              {item.title}
-            </div>
-            <span class="text-sm font-normal opacity-80 text-primary-content">
-              {dayjs(item.created).format('MMM DD, YYYY')}
-            </span>
-          </div>
-          <p class="text-primary-content">{item.description}</p>
-        </div>
-      </a>
+      <PostCard data={item} />
     {/each}
   </Masonry>
   {#if postLoading}

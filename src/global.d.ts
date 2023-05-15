@@ -22,6 +22,7 @@ declare global {
     banner: string;
     content: string;
     author: string;
+    viewCounts: number;
     expand: {
       author?: User;
       tags?: Tag[];
