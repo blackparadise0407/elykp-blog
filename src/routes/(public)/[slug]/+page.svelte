@@ -6,6 +6,7 @@
 
   import { getPbFileUrl, pb } from '@/lib/pb';
   import { globalStore } from '@/lib/data-access/global';
+  import { env } from '@/constants/environment';
 
   import type { PageData } from './$types';
   import CommentInput from './comment-input.svelte';
@@ -49,6 +50,9 @@
   onMount(() => {
     loadComments();
     html = processHtml(post.content);
+    fetch(`${env.pbUrl}/api/posts/${post.id}/view-counts`, {
+      method: 'post'
+    }).catch();
   });
 
   function getThumb(w: number) {
