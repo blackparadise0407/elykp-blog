@@ -1,6 +1,7 @@
 import slugify from 'slugify';
 
 export const processHtml = (rawHTML: string) => {
+  let textContent = '';
   const preloadDoc = document.createElement('div');
   preloadDoc.innerHTML = rawHTML;
   if (preloadDoc) {
@@ -41,6 +42,13 @@ export const processHtml = (rawHTML: string) => {
         strict: true
       });
     }
+
+    const paragraphBlocks = preloadDoc.querySelectorAll('p:not(:empty)');
+    for (const paragraphBlock of paragraphBlocks) {
+      if (paragraphBlock.textContent) {
+        textContent = textContent.concat(paragraphBlock.textContent);
+      }
+    }
   }
 
   const content = document.getElementById('content');
@@ -50,5 +58,8 @@ export const processHtml = (rawHTML: string) => {
   }
   preloadDoc.remove();
 
-  return content?.innerHTML;
+  return {
+    html: content?.innerHTML,
+    minReads: textContent.split(' ').length / 300
+  };
 };

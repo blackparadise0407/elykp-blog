@@ -20,6 +20,7 @@
   let bannerUrl = '';
   let hasMoreComments = false;
   let html: string | undefined;
+  let minReads: number | undefined;
 
   function getBadgeColor(name: string) {
     const availableColors = ['', 'badge-primary', 'badge-secondary', 'badge-accent', 'badge-ghost'];
@@ -49,7 +50,9 @@
 
   onMount(() => {
     loadComments();
-    html = processHtml(post.content);
+    const res = processHtml(post.content);
+    html = res.html;
+    minReads = res.minReads;
     fetch(`${env.pbUrl}/api/posts/${post.id}/view-counts`, {
       method: 'post'
     }).catch();
@@ -90,9 +93,14 @@
         </figure>
       {/if}
       <h1 class="text-4xl mb-0 text-center">{post.title}</h1>
+
       <p class="text-center">
         Published on
         {dayjs(post.created).format('MMM DD, YYYY')}
+        {#if minReads}
+          {' '}•{' '}
+          <span>{Math.ceil(minReads)} min reads</span>
+        {/if}
       </p>
       <TableOfContent {html} />
       <div
