@@ -94,6 +94,16 @@
 </script>
 
 <svelte:head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXZ6MBM5RS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-RXZ6MBM5RS');
+  </script>
   <title>Elykp</title>
 </svelte:head>
 

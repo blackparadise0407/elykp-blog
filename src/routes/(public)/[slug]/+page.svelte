@@ -74,6 +74,16 @@
 </script>
 
 <svelte:head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXZ6MBM5RS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-RXZ6MBM5RS');
+  </script>
   <title>{post.title}</title>
   <meta name="author" content={post.expand.author?.username} />
   <meta name="description" content={post.description} />
