@@ -7,6 +7,7 @@
   import { getPbFileUrl, pb } from '@/lib/pb';
   import { globalStore } from '@/lib/data-access/global';
   import { env } from '@/constants/environment';
+  import { enqueue } from '@/lib/data-access/toast';
 
   import type { PageData } from './$types';
   import CommentInput from './comment-input.svelte';
@@ -17,6 +18,7 @@
   export let data: PageData;
 
   let comments: Comment[] = [];
+  let commentLoading = true;
   let bannerUrl = '';
   let hasMoreComments = false;
   let html: string | undefined;
@@ -40,12 +42,19 @@
   }
 
   async function loadComments() {
-    const { items, totalItems } = await pb.collection('comments').getList<Comment>(1, 10, {
-      sort: '-created',
-      filter: `post='${post.id}'`
-    });
-    comments = items;
-    hasMoreComments = comments.length < totalItems;
+    commentLoading = true;
+    try {
+      const { items, totalItems } = await pb.collection('comments').getList<Comment>(1, 10, {
+        sort: '-created',
+        filter: `post='${post.id}'`
+      });
+      comments = items;
+      hasMoreComments = comments.length < totalItems;
+    } catch (e: any) {
+      enqueue(e?.message, { variant: 'error' });
+    } finally {
+      commentLoading = false;
+    }
   }
 
   onMount(() => {
@@ -133,6 +142,9 @@
   </div>
   <div class="divider" />
   <CommentInput on:submit={(e) => handleComment(e.detail)} />
+  {#if commentLoading}
+    Loading...
+  {/if}
   {#if !!comments.length}
     <div class="mt-5">
       <p class="font-bold text-lg">Top comments</p>

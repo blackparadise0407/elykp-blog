@@ -19,7 +19,7 @@ export const enqueue: EnqueueFn = (msg, opts = {}) => {
     ...prev,
     {
       id: String(Date.now() + Math.floor(Math.random() * 1000)),
-      message: msg,
+      message: String(msg),
       variant: opts.variant ?? 'success'
     }
   ]);
