@@ -14,15 +14,17 @@
   $: headings = getHeadings(html) ?? [];
 </script>
 
-<div>
-  <div class="text-2xl font-semibold">Table of Contents</div>
-  <ol>
-    {#each headings as heading}
-      <li>
-        <a class="link link-hover" href={`#${heading.id}`}>
-          {heading.textContent}
-        </a>
-      </li>
-    {/each}
-  </ol>
-</div>
+{#if headings.length}
+  <div>
+    <div class="text-2xl font-semibold">Table of Contents</div>
+    <ol>
+      {#each headings as heading}
+        <li>
+          <a class="link link-hover" href={`#${heading.id}`}>
+            {heading.textContent}
+          </a>
+        </li>
+      {/each}
+    </ol>
+  </div>
+{/if}
