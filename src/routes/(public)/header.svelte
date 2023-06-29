@@ -114,11 +114,11 @@
               <span style="width: -webkit-fill-available;">Use default settings</span>
               <button class="btn btn-primary" on:click={() => resetDefaultSetting()}>Reset</button>
             </div>
-            <div class="divider" />
+            <!-- <div class="divider" />
             <div class="p-2 flex justify-between flex-row items-center">
               <span>Tired of reading?</span>
               <a class="link link-primary link-hover" href="/games">Play some games</a>
-            </div>
+            </div> -->
           </ul>
         </div>
       </Dropdown>
