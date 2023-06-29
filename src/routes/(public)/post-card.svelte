@@ -33,13 +33,13 @@
         <span>{data.viewCounts}</span>
       </div>
 
-      <div class="text-3xl font-extrabold text-primary-content">
+      <div class="text-xl md:text-2xl font-extrabold text-primary-content">
         {data.title}
       </div>
       <span class="text-sm font-normal opacity-80 text-primary-content">
         {dayjs(data.created).format('MMM DD, YYYY')}
       </span>
     </div>
-    <p class="text-primary-content">{data.description}</p>
+    <p class="text-primary-content line-clamp-4">{data.description}</p>
   </div>
 </a>

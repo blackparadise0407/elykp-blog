@@ -8,6 +8,7 @@
   import { globalStore } from '@/lib/data-access/global';
   import { env } from '@/constants/environment';
   import { enqueue } from '@/lib/data-access/toast';
+  import PageProgress from '@/components/page-progress.svelte';
 
   import type { PageData } from './$types';
   import CommentInput from './comment-input.svelte';
@@ -102,6 +103,8 @@
   <meta property="og:image" content={bannerUrl} />
   <link rel="canonical" href={`${$page.url.origin}/${post.slug}`} />
 </svelte:head>
+
+<PageProgress />
 
 <article class="container py-10">
   <div class="relative">

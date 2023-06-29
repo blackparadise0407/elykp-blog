@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/routes/**/*.{svelte,ts}', './src/**/*.html'],
+  content: ['./src/routes/**/*.{svelte,ts}', './src/**/*.{html,svelte}'],
   theme: {
     container: {
       padding: {
