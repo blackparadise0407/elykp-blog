@@ -11,5 +11,10 @@
   }
 </script>
 
-<progress class="fixed top-0 left-0 progress progress-primary z-50" value={progress} max="100" />
+<progress
+  class="fixed top-0 left-0 progress progress-primary z-50"
+  class:invisible={!progress}
+  value={progress}
+  max="100"
+/>
 <svelte:window bind:scrollY />
